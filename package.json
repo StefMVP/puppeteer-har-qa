@@ -3,6 +3,7 @@
     "axios": "^0.23.0",
     "form-data": "^4.0.0",
     "js-beautify": "^1.14.0",
+    "puppeteer": "^10.4.0",
     "puppeteer-har": "^1.1.2"
   }
 }
