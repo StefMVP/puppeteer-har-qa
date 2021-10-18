@@ -20,7 +20,6 @@ let downloadMainfilePath = 'download/download-main.js'
 let numberLinesToPrintBefore = 15;
 let numberLinesToPrintAfter = 0;
 let numberTraceLines = 3;
-l
 
 //Global variable
 let mainUrlHash = '';
