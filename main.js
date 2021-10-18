@@ -47,7 +47,6 @@ async function GetBrowser(){
 async function SetupPageEvents(page) {
     page.on('console', async (msg) => {
         if (msg._type == 'error'){
-            console.log(msg)
             const args = await msg.args()
             args.forEach(async (arg) => {
                 const val = await arg.jsonValue()
@@ -67,11 +66,10 @@ async function SetupPageEvents(page) {
             catch{}
             let respTextSplit = respText != '' ? respText.trace.split('\n') : []
             let respTextFinal = ''
-            let maxTraceLength = Math.min(respTextSplit.length, numberTraceLines)
-            for (let i = 0; i < maxTraceLength; i++){
+            for (let i = 0; i < Math.min(respTextSplit.length, numberTraceLines); i++){
                 respTextFinal += '\n' + respTextSplit[i]
             }
-            networkErrors.push([respText.error, resp._status, resp._url, respText.message, respTextFinal]); 
+            networkErrors.push([respText.error, resp._status, resp._url, respText.message, respTextFinal, resp._request._postData]); 
         }
         if (resp.url().includes(mainFileInclude) && resp.url().includes('.js')) {
             mainUrlHash = convertURLToFileName(await resp._url)
@@ -85,7 +83,6 @@ async function SetupPageEvents(page) {
                 let redirectChain = interceptedRequest.redirectChain();
                 if(redirectChain.length === 0) {
                 let response = await interceptedRequest.response();
-                //console.log(interceptedRequest.url(), fileName, mainUrlHash)
 
                 if (response !== null) {
                     let contentRequest = await response.text();
@@ -176,7 +173,7 @@ async function ParseConsoleErrors(){
             }
         }
         catch(e){
-            console.log(e,consoleErrors[i])
+            console.error(e,consoleErrors[i])
         }
     }
 }
